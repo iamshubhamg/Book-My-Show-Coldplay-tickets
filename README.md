@@ -1,6 +1,10 @@
 # 🎶 Coldplay Concert Ticket Booking Automation 🎫
-![Visitor Count](https://visitor-badge.glitch.me/badge?page_id=iamshubhamg.Book-My-Show-Coldplay-tickets)
-
+<table>
+  <tr>
+    <td>You are visitor</td>
+    <td><img src="https://profile-counter.glitch.me/iamshubhamg/count.svg" alt="visitor count" height="20"></td>
+  </tr>
+</table>
 
 Welcome to the Coldplay "Music of the Spheres" 🌌 World Tour concert ticket booking automation script. This tool helps you automate the process of booking tickets for **Coldplay's upcoming concert** at **D Y Patil Stadium, Mumbai** on **18th & 19th January 2025**, using the official **BookMyShow** website. The concert is part of Coldplay's highly anticipated tour and promises to be a magical experience with stunning visuals, immersive performances, and all your favorite tracks. 🎤✨
 
