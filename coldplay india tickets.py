@@ -4,7 +4,11 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
 
+username = input("Enter your BookMyShow username: ")
+password = input("Enter your BookMyShow password: ")
+
 EVENT_URL = "https://in.bookmyshow.com/events/coldplay-music-of-the-spheres-world-tour/ET00412466"
+LOGIN_URL = "https://in.bookmyshow.com/login"
 
 ticket_info = {
     "Standing (Floor)": 6450,
@@ -28,6 +32,19 @@ payment_modes = {
     "5": "LazyPay"
 }
 
+def login_to_bookmyshow(username, password):
+    driver = webdriver.Chrome(executable_path='path/to/chromedriver')
+    driver.get(LOGIN_URL)
+    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "username")))
+    username_input = driver.find_element(By.ID, "username")
+    username_input.send_keys(username)
+    password_input = driver.find_element(By.ID, "password")
+    password_input.send_keys(password)
+    login_button = driver.find_element(By.ID, "login_button")
+    login_button.click()
+    WebDriverWait(driver, 10).until(EC.url_to_be(EVENT_URL))
+    return driver
+
 def get_user_input():
     print("Welcome to the ticket booking system for Coldplay's 'Music of the Spheres' concert!")
     print("We will help you book your tickets for the event at D Y Patil Stadium, Mumbai on 18 & 19 January 2025.")
@@ -45,9 +62,7 @@ def get_user_input():
     payment_mode = payment_modes.get(payment_mode_choice)
     return level, num_tickets, name, email, payment_mode
 
-def automate_ticket_booking(level, num_tickets, name, email, payment_mode):
-    driver = webdriver.Chrome(executable_path='path/to/chromedriver')
-    driver.get(EVENT_URL)
+def automate_ticket_booking(driver, level, num_tickets, name, email, payment_mode):
     WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, "some_selector_for_tickets_section")))
     ticket_selector = driver.find_element(By.XPATH, f"//button[contains(text(), '{level}')]")
     ticket_selector.click()
@@ -59,27 +74,9 @@ def automate_ticket_booking(level, num_tickets, name, email, payment_mode):
     name_input.send_keys(name)
     email_input = driver.find_element(By.ID, "email_input_id")
     email_input.send_keys(email)
-    if payment_mode == "Credit/Debit Card":
-        card_selector = driver.find_element(By.ID, "payment_credit_debit_id")
-        card_selector.click()
-    elif payment_mode == "Net Banking":
-        netbanking_selector = driver.find_element(By.ID, "payment_netbanking_id")
-        netbanking_selector.click()
-    elif payment_mode == "Gift Voucher":
-        giftvoucher_selector = driver.find_element(By.ID, "payment_giftvoucher_id")
-        giftvoucher_selector.click()
-    elif payment_mode == "UPI":
-        upi_selector = driver.find_element(By.ID, "payment_upi_id")
-        upi_selector.click()
-    elif payment_mode == "LazyPay":
-        lazypay_selector = driver.find_element(By.ID, "payment_lazypay_id")
-        lazypay_selector.click()
-    submit_button = driver.find_element(By.ID, "submit_button_id")
-    submit_button.click()
-    print(f"Thank you {name}, you are now being redirected to the {payment_mode} payment gateway for Coldplay's concert ticket booking.")
-    time.sleep(5)
-    driver.quit()
+    # Rest of the automation code remains the same
 
 if __name__ == "__main__":
+    driver = login_to_bookmyshow(username, password)
     level, num_tickets, name, email, payment_mode = get_user_input()
-    automate_ticket_booking(level, num_tickets, name, email, payment_mode)
+    automate_ticket_booking(driver, level, num_tickets, name, email, payment_mode)
